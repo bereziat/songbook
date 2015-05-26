@@ -1,0 +1,28 @@
+%% Commentaire a ignorer
+%% Une syntaxe facile pour taper au kilomètre
+
+%t Titre
+%a Auteurs, ....
+%c Copyright
+
+%start
+
+% Texte à insérer  
+[Ab]Moi ce que [A#]j'aime  
+%%  Un accord sur un groupe de mots
+[Ab]Moi ce que_
+%% Un accord pour une lettre ou groupe de lettres (a voir sur un vrai exemple)
+[A#]j_'aime 
+
+%% Accords au dessus d'un espace
+[A] mot
+
+%% Accords sans texte
+
+[Em] [F] [G] ...
+
+%% Mot avec plusieurs accords
+Allé[Am]lu[E]ya
+
+
+%finish

@@ -1,0 +1,52 @@
+#! /usr/bin/perl -nl
+
+BEGIN {
+  use strict;
+  my ($title,$authors,$cr,%chords);
+  print "\\documentclass{article}";
+  print "\\usepackage{fullpage}";
+  print "\\usepackage[chorded]{songs}";
+    print "\\usepackage[utf8]{inputenc}";
+  print "\\noversenumbers";
+  print "\\begin{document}";
+
+  print "\\begin{songs}{}";
+}
+
+END {
+  print "\\end{songs}";
+  print "\\end{document}"
+}
+
+if (/^%t +(.*)/) {$title = $1;}
+elsif (/^%a +(.*)/) {$authors = $1;}
+elsif (/^%c +(.*)/) {$cr = $1;}
+elsif (/^%chord +(\S+) +(\S+)/) {$chords{$1} = $2;}
+elsif (/^%start/) {
+  my $str="by={$authors}";
+  $str=$str.",cr={$cr}" if $cr;
+  print "\\beginsong{$title}[$str]";
+  print "\\gtab{$_}{$chords{$_}}" for (sort keys %chords);
+  %chords = ();
+  print "\\beginverse";
+} elsif (/^%finish/) {
+  print "\\endverse";
+  print "\\endsong";
+
+  #print $title;
+  #print $authors;
+  #print $cr;
+  undef $title;
+  undef $authors;
+  undef $cr;
+} elsif (/^% +(.*)/) {
+  print "\\textnote{$1}";
+} else {
+  # Chords
+  s/\[/\\[/g;
+  # Bemol in chords
+  while (s/(\[[^\]])b(?=.*\])/$1\&/) {};
+  # capture words group / isolated letter(s) with _ marker
+  while (s/\](([^_]+)_)/\]\{$2\}/) {};
+  print ;
+}
