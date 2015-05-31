@@ -1,7 +1,7 @@
 * Description
 =sng2tex= is a Perl script that produces a songbook from
-ascii file. Each ASCII file describes one song using
-a simple format to define chords and their position in
+ascii files. Each file describes one song using
+a simple format to define chords and their positions in
 the lyrics.
 
 =sng2tex= relies on LaTeX and =songs= package.
