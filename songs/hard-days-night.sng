@@ -1,10 +1,7 @@
-%t A Hard Day's Night
-%a The Beatles
-%c Lennon/MacCartney
+A Hard Day's Night
+The Beatles
 
 %chord G7sus4  353533
-
-%start
 
 % Intro:
 [G7sus4]
@@ -31,16 +28,20 @@ You know I [G]feel [C]o[G]kay
 When I'm h[Bm]ome [Em] ev'rything seems to be [Bm]right
 When I'm h[G]ome [Em] feeling you holding me [C7]tight, t[D7]ight, yeah
 
-% Chorus
-% Solo
+% Repeat chorus
+% Solo:
+[G] [C] [G]
+[F] [G]
+[G] [C] [G]
+[F] [G]
 
 So why on [C]earth should I moan
 'Cause when I [D]get you alone
 You know I [G]feel [C]o[G]kay
 
-%Bridge
-%Chorus
+% Repeat bridge
+% Repeat chorus, than:
+
 You know I [G]feel [C9]al[G]right
 You know I [G]feel [C9]al[G]right
 
-%finish

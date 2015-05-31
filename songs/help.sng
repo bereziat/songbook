@@ -1,17 +1,13 @@
-%% Commentaires ignorés: exemple complet avec Help des Beatles
-
-%% titre
-%t Help!
-%% auteurs
-%a The Beatles
-%% copyright (optionnel)
-%c Lennon/McCartney
-
-%% définition d'un accord
+%% Lines begining with %% are comments
+%% First line should be the song title
+Help!
+%% Second line should be the song authors
+The Beatles
+%% Optional: a series of chord definition
 %chord Asus2 X02200
 
-%start
-
+%% Song begins after a blank line
+%% Lines begining with % followed by a blank character indicates an annotation
 % Intro
 [Bm]Help!  I need somebody
 [G]Help!   not just anybody 
@@ -36,10 +32,7 @@ But every now and then I [C#m]feel so insecure
 [F#m]Now I find I've changed my mind and [D]opened [G]up the doors [A]
 
 % Repeat Chorus
-% Repeat first verse
+% Repeat First verse
 % Repeat Chorus until last line, then:
 Won't you [A]please please help [F#m]me
 Help me   Help [G] [A]me.  Ooh, mm.
-
-%finish
-

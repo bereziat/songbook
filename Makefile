@@ -1,4 +1,4 @@
-SNGFILES = $(wildcard beatles/*.sng)
+SNGFILES = $(wildcard songs/*.sng)
 songsbook.pdf: $(SNGFILES)
 	./sng2tex $^ > songsbook.tex
 	pdflatex songsbook

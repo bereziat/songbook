@@ -1,52 +1,65 @@
-#! /usr/bin/perl -nl
+#! /usr/bin/perl -lw
+# (c) 2015 D.Bereziat
 
-BEGIN {
-  use strict;
-  my ($title,$authors,$cr,%chords);
-  print "\\documentclass{article}";
-  print "\\usepackage{fullpage}";
-  print "\\usepackage[chorded]{songs}";
-    print "\\usepackage[utf8]{inputenc}";
-  print "\\noversenumbers";
-  print "\\begin{document}";
+use strict;
 
-  print "\\begin{songs}{}";
-}
+# Entête LaTeX
+my ($title,$authors,$cr,%chords);
+print "\\documentclass{article}";
+print "\\usepackage{fullpage}";
+print "\\usepackage[chorded]{songs}";
+print "\\usepackage[utf8]{inputenc}";
+print "\\noversenumbers";
+print "\\begin{document}";
+print "\\begin{songs}{}";
 
-END {
-  print "\\end{songs}";
-  print "\\end{document}"
-}
+for my $file (@ARGV) {
+  open (F, "<$file") ;
 
-if (/^%t +(.*)/) {$title = $1;}
-elsif (/^%a +(.*)/) {$authors = $1;}
-elsif (/^%c +(.*)/) {$cr = $1;}
-elsif (/^%chord +(\S+) +(\S+)/) {$chords{$1} = $2;}
-elsif (/^%start/) {
-  my $str="by={$authors}";
-  $str=$str.",cr={$cr}" if $cr;
-  print "\\beginsong{$title}[$str]";
-  print "\\gtab{$_}{$chords{$_}}" for (sort keys %chords);
-  %chords = ();
+  do { $_=<F>} while (/^%%/) ;
+  $title = $_;
+  chomp $title;
+  do { $_=<F>} while (/^%%/) ;
+  $authors = $_;
+  chomp $authors;
+
+  print "\\beginsong{$title}[by={$authors}]";
+
+  # read chords definition
+  while ( <F>) {
+    # Skips comments
+    next if /^%%/;
+    # Chord definitions
+    do { print "\\gtab{$1}{$2}"; next} if /^%chord +(\S+) +(\S+)/;
+    last;
+  }
+
   print "\\beginverse";
-} elsif (/^%finish/) {
+
+  while( <F>) {
+    # Comments
+    next if /^%%/;
+
+    # Annotations
+    do { print "\\textnote{$1}"; next} if /^%\s+(.*)/ ;
+
+    # Chords
+    s/\[/\\[/g;
+
+    # Bemol in chords (convert b to &)
+    while (s/(\[[^\]])b(?=.*\])/$1\&/) {};
+
+    # capture words group / isolated letter(s) with _ marker
+    while (s/\](([^_\[]+)_)/\]\{$2\}/) {};
+
+    print ;
+  }
+  close F;
+
   print "\\endverse";
   print "\\endsong";
-
-  #print $title;
-  #print $authors;
-  #print $cr;
-  undef $title;
-  undef $authors;
-  undef $cr;
-} elsif (/^% +(.*)/) {
-  print "\\textnote{$1}";
-} else {
-  # Chords
-  s/\[/\\[/g;
-  # Bemol in chords
-  while (s/(\[[^\]])b(?=.*\])/$1\&/) {};
-  # capture words group / isolated letter(s) with _ marker
-  while (s/\](([^_]+)_)/\]\{$2\}/) {};
-  print ;
 }
+
+print "\\end{songs}";
+print "\\end{document}"
+

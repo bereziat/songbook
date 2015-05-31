@@ -1,13 +1,14 @@
 %% Commentaire a ignorer
-%% Une syntaxe facile pour taper au kilomètre
+%% Premiere ligne : titre
+Titre
+%% Seconde ligne: autheurs
+Auteurs, ....
+%% Défintions optionnelle d'accord
+%chord A7 X02020
+%chord Bb X13331
 
-%t Titre
-%a Auteurs, ....
-%c Copyright
-
-%start
-
-% Texte à insérer  
+%% Après une ligne blanche, la chanson commence
+% Annotation à insérer
 [Ab]Moi ce que [A#]j'aime  
 %%  Un accord sur un groupe de mots
 [Ab]Moi ce que_
@@ -25,4 +26,9 @@
 Allé[Am]lu[E]ya
 
 
-%finish
+Vocabulaire
+
+Fr: Couplet - Refrain - Pont - Solo
+En: Verse - Chorus - Bridge - Solo
+
+
