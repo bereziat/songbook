@@ -3,15 +3,25 @@
 
 use strict;
 
+my $numsong = 1;
+
 # Entête LaTeX
-my ($title,$authors,$cr,%chords);
+my ($title,$authors,$cr);
 print "\\documentclass{article}";
 print "\\usepackage{fullpage}";
 print "\\usepackage[chorded]{songs}";
 print "\\usepackage[utf8]{inputenc}";
 print "\\noversenumbers";
 print "\\begin{document}";
+print "\\title{The Famous Boby Boeuf Songbook}";
+print "\\date{May 2015}";
+print "\\maketitle";
+print "\\include{index}";
 print "\\begin{songs}{}";
+
+# Index of songs
+open IND, ">index.tex";
+print IND "\\begin{center} \\huge \\bf Index of songs \\end{center}\n\\begin{enumerate}";
 
 for my $file (@ARGV) {
   open (F, "<$file") ;
@@ -23,10 +33,16 @@ for my $file (@ARGV) {
   $authors = $_;
   chomp $authors;
 
-  print "\\beginsong{$title}[by={$authors}]";
+  print "\\beginsong{$title}[by={$authors}]\\label{song$numsong}";
+
+  # index song:
+  print IND "\\item [] \\Large $title \\hfill page \\pageref{song$numsong}";
+
+  $numsong ++;
 
   # read chords definition
   while ( <F>) {
+    chomp;
     # Skips comments
     next if /^%%/;
     # Chord definitions
@@ -37,11 +53,12 @@ for my $file (@ARGV) {
   print "\\beginverse";
 
   while( <F>) {
+    chomp;
     # Comments
     next if /^%%/;
 
     # Annotations
-    do { print "\\textnote{$1}"; next} if /^%\s+(.*)/ ;
+    do { print "\\vspace*{.3cm}\\textnote{$1}"; next} if /^%\s+(.*)/ ;
 
     # Chords
     s/\[/\\[/g;
@@ -58,8 +75,11 @@ for my $file (@ARGV) {
 
   print "\\endverse";
   print "\\endsong";
+  print "%%%%%%%%%%%%%%%"
 }
 
 print "\\end{songs}";
-print "\\end{document}"
+print "\\end{document}";
 
+print IND "\\end{enumerate}";
+close IND;
