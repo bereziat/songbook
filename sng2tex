@@ -6,7 +6,17 @@ use strict;
 my $numsong = 1;
 
 # Entête LaTeX
-my ($title,$authors,$cr);
+my ($title,$authors,$titlepage,$index);
+
+for (@ARGV) {
+  do {
+    print STDERR "Usage is: sng2tex [-t][-i] FILE FILE ...";
+    exit 1;
+  } if /^-h/;
+  $titlepage = 1 if /^-t$/;
+  $index = 1 if /^-i$/;
+}
+
 print "\\documentclass{article}";
 print "\\usepackage{fullpage}";
 print "\\usepackage[chorded]{songs}";
@@ -15,8 +25,8 @@ print "\\noversenumbers";
 print "\\begin{document}";
 print "\\title{The Famous Boby Boeuf Songbook}";
 print "\\date{May 2015}";
-print "\\maketitle";
-print "\\include{index}";
+print "\\maketitle" if $titlepage;
+print "\\include{index}" if $index;
 print "\\begin{songs}{}";
 
 # Index of songs
@@ -24,6 +34,8 @@ open IND, ">index.tex";
 print IND "\\begin{center} \\huge \\bf Index of songs \\end{center}\n\\begin{enumerate}";
 
 for my $file (@ARGV) {
+  next if $file =~ /^-/;
+
   open (F, "<$file") ;
 
   do { $_=<F>} while (/^%%/) ;

@@ -1,14 +1,47 @@
 * Description
-=sng2tex= is a Perl script that produces a songbook from
-ascii files. Each file describes one song using
-a simple format to define chords and their positions in
-the lyrics.
+=sng2tex= is a Perl script that produces a songbook from ascii
+files. Each file describes one song using a simple format to define
+chords and their positions in the lyrics. Numerous songs are available
+on Internet in raw text and easily adaptable to this format.
 
 =sng2tex= relies on LaTeX and =songs= package.
 
 * Structure of an song file
-  TODO
+** General structure
+  A line begining by =%%= pattern will be considered
+  as a comment and ignored.
 
+  - The first line should be the song title.
+  - The second line should be the author names or band name.
+  - The following lines begining by =%chord= pattern produce
+    a guitar chord definition. Syntax is:
+#+BEGIN_SRC 
+%chord Am X03320
+#+END_SRC
+  - The song begins after a *blank* line.
+  - A line begining by =% text= pattern will display
+    =text= as an annotation.
+  - Other lines describe lyrics and can contain
+    chord position
+** Chord position
+   A chord is introduced by =[chord]= pattern, where =chord= is the
+   pattern, inside the sentence. 
+   - if the chord is placed just before a word: it will be placed
+     just over it. 
+   - put a blank between the chord and the word makes the chord
+     placed over the word but before it.
+   - a chord is always placed over a word. To change that, use
+     =_= special character to indicate the end of group. E.g.:
+     =[C]I'm the_ King=
 * Examples
-  TODO
+  The input:
+#+BEGIN_SRC 
+My very first song
+The unkown soldier
+%chord Bm/A x04400
 
+% First verse:
+[Bm]It is_ [Bm/A]my very_
+[G]first  [Em]song ...
+#+END_SRC
+  will produce this result.
