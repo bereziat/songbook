@@ -29,7 +29,7 @@ on Internet in raw text and easily adaptable to this format.
    - if the chord is placed just before a word: it will be placed
      just over it. 
    - put a blank between the chord and the word makes the chord
-     placed over the word but before it.
+     placed over the word but after it.
    - a chord is always placed over a word. To change that, use
      =_= special character to indicate the end of group. E.g.:
      =[C]I'm the_ King=
