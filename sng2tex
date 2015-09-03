@@ -5,7 +5,7 @@ use strict;
 
 my $numsong = 1;
 
-# Entête LaTeX
+# LaTeX header
 my ($title,$authors,$titlepage,$index);
 
 for (@ARGV) {
@@ -18,7 +18,7 @@ for (@ARGV) {
 }
 
 print "\\documentclass{article}";
-print "\\usepackage{fullpage}";
+print "\\usepackage{fullpage,hyperref}";
 print "\\usepackage[chorded]{songs}";
 print "\\usepackage[utf8]{inputenc}";
 print "\\noversenumbers";
@@ -48,7 +48,7 @@ for my $file (@ARGV) {
   print "\\beginsong{$title}[by={$authors}]\\label{song$numsong}";
 
   # index song:
-  print IND "\\item [] \\Large $title \\hfill page \\pageref{song$numsong}";
+  print IND "\\item [] \\large $title \\hfill page \\pageref{song$numsong}";
 
   $numsong ++;
 
@@ -58,7 +58,13 @@ for my $file (@ARGV) {
     # Skips comments
     next if /^%%/;
     # Chord definitions
-    do { print "\\gtab{$1}{$2}"; next} if /^%chord +(\S+) +(\S+)/;
+    if (/^%chord +(\S+) +(\S+)/) {
+      my $name = $1;
+      my $def = $2;
+      $name =~ s/b/\&/;
+      print "\\gtab{$name}{$def}";
+      next;
+    }
     last;
   }
 
