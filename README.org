@@ -18,11 +18,16 @@ on Internet in raw text and easily adaptable to this format.
 #+BEGIN_SRC 
 %chord Am X03320
 #+END_SRC
+    or
+#+BEGIN_SRC 
+%chord C 2:X13331
+#+END_SRC
+    to make appear a fret position (here 2) beside the chord.
   - The song begins after a *blank* line.
   - A line begining by =% text= pattern will display
     =text= as an annotation.
   - Other lines describe lyrics and can contain
-    chord position
+    chord position.
 ** Chord position
    A chord is introduced by =[chord]= pattern, where =chord= is the
    pattern, inside the sentence. 
@@ -44,4 +49,7 @@ The unkown soldier
 [Bm]It is_ [Bm/A]my very_
 [G]first  [Em]song ...
 #+END_SRC
-  will produce this result.
+  will produce this result:
+  #+CAPTION: This is the caption for the next figure link (or table)
+  [[./exemple.png]]
+

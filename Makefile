@@ -14,9 +14,11 @@ clean:
 cleanall: clean
 	rm -f songsbook.pdf
 
-.sng.pdf:
-	./sng2tex $^ > /tmp/$*.tex
-	pdflatex $! && pdflatex song
+.sng.tex:
+	./sng2tex $< > $@
+
+.tex.pdf:
+	pdflatex $<
 
 
-.SUFFIXES: .pdf .sng
+.SUFFIXES: .pdf .sng .tex
