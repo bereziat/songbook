@@ -1,0 +1,113 @@
+#! /usr/bin/perl -lw
+# (c) 2015 D.Bereziat
+# Convert chord file (http://linkesoft.com/songbook/manual.html#chordproformat)
+# to LaTeX
+
+use strict;
+
+my $numsong = 1;
+
+# LaTeX header
+my ($title,@subtitles,$titlepage,$index);
+
+for (@ARGV) {
+  do {
+    print STDERR "Usage is: chord2tex [-t][-i] FILE FILE ...";
+    exit 1;
+  } if /^-h/;
+  $titlepage = 1 if /^-t$/;
+  $index = 1 if /^-i$/;
+}
+
+print "\\documentclass{article}";
+print "\\usepackage{fullpage,hyperref,framed}";
+print "\\usepackage[chorded]{songs}";
+print "\\usepackage[utf8]{inputenc}";
+print "\\noversenumbers";
+print "\\begin{document}";
+print "\\title{The Famous Boby Boeuf Songbook}";
+#print "\\date{May 2015}";
+print "\\maketitle" if $titlepage;
+print "\\include{index}" if $index;
+print "\\begin{songs}{}";
+
+# Index of songs
+open IND, ">index.tex";
+print IND "\\begin{center} \\huge \\bf Index of songs \\end{center}\n\\begin{enumerate}";
+
+for my $file (@ARGV) {
+  next if $file =~ /^-/;
+
+  # Parse once for title and sub titles and chords definitions ...
+  open (F, "<$file") ;
+
+  while(<F>) {
+    chomp;
+    $title = $2 if /\{t(itle)?:([^}]+)\}/;
+    push (@subtitles,$3) if /\{s(ub)?t(itle)?:([^}]+)\}/;
+    # chords def : todo later
+    print STDERR "chord defition TODO !" if /\{define.*\}/;
+  }
+  close F;
+
+  print "\\beginsong{$title}[by={$subtitles[0]}]\\label{song$numsong}";
+  print IND "\\item [] \\large $title \\hfill page \\pageref{song$numsong}";
+
+  $numsong ++;
+
+  # Parse a second one
+  open (F, "<$file");
+  print "\\beginverse";
+
+  while( <F>) {
+    chomp;
+    # Comments to ignore
+    next if /^#/;
+
+    # Annotations
+    do { print "\\vspace*{.3cm}\\textnote{$2}"; next} if /^\{c(omment)?:([^}]+)\}/ ;
+
+    # start/end of chorus
+    do { print "\\begin{leftbar}"; next} if /\{soc\}|\{start_of_chorus\}/ ;
+    do { print "\\end{leftbar}"; next} if /\{eoc\}|\{end_of_chorus\}/ ;
+
+    # start/end of tablature
+    if (/\{sot\}|\{start_of_tablature\}/ ) {
+      print "{\\small\\begin{verbatim}";
+      while ( <F> ) {
+	last if /\{eot\}|\{end_of_tablature\}/;
+	print;
+      }
+      print "\\end{verbatim}}";
+    }
+
+    # directives to ignore
+    next if /^\{/;
+
+    # LaTeX does not like that character
+    s/_//g;
+
+    # bloc between chords or between last chord and end of ligne
+    s/\]([^\s[][^\[]*)/\]\{$1\}/g;
+
+    # remove blank blocs
+    s/\{\s*\}//g;
+
+    # Prefix chords
+    s/\[/\\[/g;
+
+    # Bemol in chords (convert b to &)
+    while (s/(\[[^\]])b(?=.*\])/$1\&/) {};
+
+    print;
+  }
+  print "\\endverse";
+  print "\\endsong";
+  close F;
+}
+
+print "\\end{songs}";
+print "\\end{document}";
+
+print IND "\\end{enumerate}";
+close IND;

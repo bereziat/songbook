@@ -1,4 +1,7 @@
 - add an option to produce a title page,
 - add an option to produce a index of songs.
 
+- crd2tex et sng2tex doivent fusionner
+- des problèmes avec | en verbatim
+- plus d'option de mise en page de songbook.sty
 

@@ -1,5 +1,7 @@
 #! /usr/bin/perl -lw
 # (c) 2015 D.Bereziat
+# Convert sng file to tex. Sng is my own format, quicker
+# to type than chord in my opinion.
 
 use strict;
 
@@ -46,9 +48,8 @@ for my $file (@ARGV) {
   chomp $authors;
 
   print "\\beginsong{$title}[by={$authors}]\\label{song$numsong}";
-
   # index song:
-  print IND "\\item [] \\large $title \\hfill page \\pageref{song$numsong}";
+  print IND "\\item [] \\large $title ($authors) \\hfill page \\pageref{song$numsong}";
 
   $numsong ++;
 
@@ -57,6 +58,8 @@ for my $file (@ARGV) {
     chomp;
     # Skips comments
     next if /^%%/;
+    next if /^#/;
+    
     # Chord definitions
     if (/^%chord +(\S+) +(\S+)/) {
       my $name = $1;
@@ -74,18 +77,36 @@ for my $file (@ARGV) {
     chomp;
     # Comments
     next if /^%%/;
+    next if /^#/;
 
     # Annotations
     do { print "\\vspace*{.3cm}\\textnote{$1}"; next} if /^%\s+(.*)/ ;
 
-    # Chords
+    # LaTeX does not like that character
+    s/_/ /g;
+
+    # Protect & : FIXME ne marche pas !!!!!
+    s/&/\\\&/g;
+
+    # bloc between chords or between last chord and end of ligne
+    s/\]([^\s[][^\[]*)/\]\{$1\}/g;
+
+    # remove blank blocs
+    s/\{\s*\}//g;
+
+    # Prefix chords
     s/\[/\\[/g;
 
     # Bemol in chords (convert b to &)
-    while (s/(\[[^\]])b(?=.*\])/$1\&/) {};
+    #   while (s/(\[[^\]])b(?=.*\])/$1\&/) {};
+    s/(\[[^\]])b(?=.*\])/$1\&/g;
+
+    # Measure bars
+    s/\|/\$\\mid\$/g;
+#    while (s/(\[[^\]])|(?=.*\])/$1\$\\mid\$/) {};
 
     # capture words group / isolated letter(s) with _ marker
-    while (s/\](([^_\[]+)_)/\]\{$2\}/) {};
+    #    while (s/\](([^_\[]+)_)/\]\{$2\}/) {};
 
     print ;
   }

@@ -4,7 +4,7 @@ files. Each file describes one song using a simple format to define
 chords and their positions in the lyrics. Numerous songs are available
 on Internet in raw text and easily adaptable to this format.
 
-=sng2tex= relies on LaTeX and =songs= package.
+=sng2tex= relies on LaTeX and [[https://www.ctan.org/tex-archive/macros/latex/contrib/songbook][Songbook]] package.
 
 * Structure of an song file
 ** General structure
