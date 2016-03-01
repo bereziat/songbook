@@ -19,14 +19,19 @@ for (@ARGV) {
   $index = 1 if /^-i$/;
 }
 
-print "\\documentclass{article}";
+# FIXME: 
+print "\\documentclass[twoside]{article}";
 print "\\usepackage{fullpage,hyperref}";
 print "\\usepackage[chorded]{songs}";
 print "\\usepackage[utf8]{inputenc}";
 print "\\noversenumbers";
+print "\\songcolumns{1}";
+print "\\renewcommand{\\lyricfont}{\\sffamily\\Large}";
+print "\\renewcommand{\\printchord}[1]{\\rmfamily\\bf#1}";
+
 print "\\begin{document}";
 print "\\title{The Famous Boby Boeuf Songbook}";
-print "\\date{May 2015}";
+# print "\\date{March 2015}";
 print "\\maketitle" if $titlepage;
 print "\\include{index}" if $index;
 print "\\begin{songs}{}";

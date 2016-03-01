@@ -16,9 +16,10 @@ cleanall: clean
 
 .sng.tex:
 	./sng2tex $< > $@
-
+.crd.tex:
+	./crd2tex $< >$@
 .tex.pdf:
 	pdflatex $<
 
 
-.SUFFIXES: .pdf .sng .tex
+.SUFFIXES: .pdf .sng .tex .crd
