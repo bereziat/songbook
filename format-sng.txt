@@ -3,7 +3,7 @@
 Titre
 %% Seconde ligne: autheurs
 Auteurs, ....
-%% Défintions optionnelle d'accord
+%% Définitions optionnelles d'accords
 %chord A7 X02020
 %chord Bb X13331
 
