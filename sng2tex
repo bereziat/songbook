@@ -33,7 +33,7 @@ print "\\begin{document}";
 print "\\title{The Famous Boby Boeuf Songbook}";
 # print "\\date{March 2015}";
 print "\\maketitle" if $titlepage;
-print "\\include{index}" if $index;
+print "\\input{index}" if $index;
 print "\\begin{songs}{}";
 
 # Index of songs
