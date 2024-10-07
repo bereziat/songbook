@@ -24,6 +24,15 @@ print "\\usepackage{fullpage,hyperref,framed}";
 print "\\usepackage[chorded]{songs}";
 print "\\usepackage[utf8]{inputenc}";
 print "\\noversenumbers";
+
+print "\\makeatletter";
+print "\\newcommand{\\namelabel}[1]{%";
+print "\\phantomsection";
+print "\\renewcommand{\\\@currentlabel}{#1}% Update the label text/name";
+print "\\label{#1}% Set the label";
+print "}";
+print "\\makeatother";
+
 print "\\begin{document}";
 print "\\title{The Famous Boby Boeuf Songbook}";
 #print "\\date{May 2015}";
@@ -50,7 +59,7 @@ for my $file (@ARGV) {
   }
   close F;
 
-  print "\\beginsong{$title}[by={$subtitles[0]}]\\label{song$numsong}";
+  print "\\beginsong{$title}[by={$subtitles[0]}]\\namelabel{song$numsong}";
   print IND "\\item [] \\large $title \\hfill page \\pageref{song$numsong}";
 
   $numsong ++;

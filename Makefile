@@ -8,7 +8,7 @@ songsbook.pdf: $(SNGFILES)
 examples/firstsong.pdf: examples/firstsong.sng
 
 clean:
-	rm -f *.aux *.log
+	rm -f *.aux *.log *.out
 	rm -f songsbook.tex index.tex
 
 cleanall: clean

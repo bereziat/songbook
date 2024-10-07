@@ -29,6 +29,14 @@ print "\\songcolumns{1}";
 print "\\renewcommand{\\lyricfont}{\\sffamily\\Large}";
 print "\\renewcommand{\\printchord}[1]{\\rmfamily\\bf#1}";
 
+print "\\makeatletter";
+print "\\newcommand{\\namelabel}[1]{%";
+print "\\phantomsection";
+print "\\renewcommand{\\\@currentlabel}{#1}% Update the label text/name";
+print "\\label{#1}% Set the label";
+print "}";
+print "\\makeatother";
+
 print "\\begin{document}";
 print "\\title{The Famous Boby Boeuf Songbook}";
 # print "\\date{March 2015}";
@@ -52,7 +60,7 @@ for my $file (@ARGV) {
   $authors = $_;
   chomp $authors;
 
-  print "\\beginsong{$title}[by={$authors}]\\label{song$numsong}";
+  print "\\beginsong{$title}[by={$authors}]\\namelabel{song$numsong}";
   # index song:
   print IND "\\item [] \\large $title ($authors) \\hfill page \\pageref{song$numsong}";
 
