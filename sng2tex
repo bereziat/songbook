@@ -77,7 +77,7 @@ for my $file (@ARGV) {
     if (/^%chord +(\S+) +(\S+)/) {
       my $name = $1;
       my $def = $2;
-      $name =~ s/b/\&/;
+      $name =~ s/b/\&/g;
       print "\\gtab{$name}{$def}";
       next;
     }
@@ -111,12 +111,13 @@ for my $file (@ARGV) {
     s/\[/\\[/g;
 
     # Bemol in chords (convert b to &)
-    #   while (s/(\[[^\]])b(?=.*\])/$1\&/) {};
+    #while (s/(\[[^\]])b(?=.*\])/$1\&/g) {};
     s/(\[[^\]])b(?=.*\])/$1\&/g;
-
+    # bemol after a / are not captured, I don't know why. a second pass is performed
+    s/(\/[^\]])b(?=.*\])/$1\&/g;
     # Measure bars
     s/\|/\$\\mid\$/g;
-#    while (s/(\[[^\]])|(?=.*\])/$1\$\\mid\$/) {};
+    #    while (s/(\[[^\]])|(?=.*\])/$1\$\\mid\$/) {};
 
     # capture words group / isolated letter(s) with _ marker
     #    while (s/\](([^_\[]+)_)/\]\{$2\}/) {};
